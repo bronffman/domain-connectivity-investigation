@@ -1,23 +1,22 @@
 # Domain Connectivity Investigation
 
-A practical troubleshooting case from an isolated corporate network segment. The issue looked like a simple "No Internet" problem at first, but the actual goal was not public Internet access. The workstation had to reach internal DNS, resolve the corporate domain, and discover a domain controller.
+Практический пример устранения неполадок в изолированном сегменте корпоративной сети. На первый взгляд, проблема выглядела как простое «отсутствие интернета», но на самом деле задача заключалась не в обеспечении доступа к общедоступному интернету. Рабочей станции необходимо было связаться с внутренней DNS-системой, разрешить корпоративный домен и обнаружить контроллер домена.
 
-All IP addresses, hostnames, domains, and account names in this repository are anonymized examples.
+Все IP-адреса, имена хостов, домены и имена учетных записей в этом репозитории являются анонимизированными примерами.
 
 ## Environment
 
-- Windows 10 workstation
-- Corporate Active Directory domain
-- Isolated internal network segment
-- Static IPv4 configuration
-- Cisco access switch
-- Local user without administrative privileges
+- Рабочая станция Windows 10
+- Корпоративный домен Active Directory
+- Изолированный внутренний сетевой сегмент
+- Статическая конфигурация IPv4
+- Коммутатор доступа Cisco
 
 ## Initial Symptoms
 
-The workstation showed network connectivity, but domain services were unavailable.
+На рабочей станции отображалось сетевое подключение, но доменные службы были недоступны.
 
-The following checks failed:
+Следующие проверки не пройдены:
 
 ```cmd
 ping corp.local
@@ -32,11 +31,11 @@ Example result:
 Getting DC name failed: Status = 1355 ERROR_NO_SUCH_DOMAIN
 ```
 
-Windows also displayed a network status warning. Since this was an isolated corporate network, the Windows "No Internet" status was not treated as the main problem.
+В Windows также отображалось предупреждение о состоянии сети. Поскольку это была изолированная корпоративная сеть, статус «Нет интернета» в Windows не рассматривался как основная проблема.
 
 ## Problem Workstation Configuration
 
-The network adapter had a static IPv4 configuration:
+Сетевой адаптер имел статическую конфигурацию IPv4:
 
 ```text
 IPv4 Address: 10.10.40.164
@@ -45,18 +44,18 @@ Default Gateway: 10.10.40.161
 DNS Servers: Not configured
 ```
 
-The adapter had link, and the default gateway was reachable:
+Адаптер подключен и шлюз по умолчанию доступен:
 
 ```cmd
 ping 10.10.40.161
 tracert 10.10.40.161
 ```
 
-Result: successful replies from the gateway.
+Результат: шлюз ответил успешно.
 
 ## DNS Check
 
-The DNS configuration was checked with:
+Проверка конфигурации DNS проводилась с помощью:
 
 ```cmd
 netsh interface ipv4 show dnsservers
@@ -69,11 +68,11 @@ Configuration for interface "Ethernet"
 Statically Configured DNS Servers: None
 ```
 
-This explained why the workstation could not resolve the domain name or discover a domain controller.
+Это объясняло, почему рабочая станция не могла разрешить доменное имя или обнаружить контроллер домена.
 
 ## Domain Discovery Check
 
-The domain controller lookup failed:
+Поиск контроллера домена завершился неудачей:
 
 ```cmd
 nltest /dsgetdc:corp.local
@@ -85,40 +84,40 @@ Result:
 Getting DC name failed: Status = 1355 ERROR_NO_SUCH_DOMAIN
 ```
 
-This confirmed that the workstation could not locate the domain infrastructure.
+Это подтвердило, что рабочая станция не смогла обнаружить инфраструктуру домена.
 
 ## Route and ARP Checks
 
-The routing table was checked:
+Таблица маршрутизации была проверена:
 
 ```cmd
 route print
 ```
 
-The workstation had a default route through its configured gateway:
+Рабочая станция имела маршрут по умолчанию через настроенный ею шлюз:
 
 ```text
 0.0.0.0/0 -> 10.10.40.161
 10.10.40.160/28 -> On-link
 ```
 
-ARP was also checked:
+Также была проверена защита от повторного обращения (ARP):
 
 ```cmd
 arp -a
 ```
 
-The workstation could see its local gateway addresses, so the local link was working.
+Рабочая станция видела адреса своих локальных шлюзов, поэтому локальное соединение работало.
 
 ## Comparison with Working Workstations
 
-A working workstation in the same area was checked with:
+Рабочее место в той же зоне было проверено с помощью следующих средств:
 
 ```cmd
 ipconfig /all
 ```
 
-The working workstation had a different configuration:
+Рабочее место имело другую конфигурацию:
 
 | Parameter | Problem Workstation | Working Workstation |
 |---|---:|---:|
@@ -129,29 +128,29 @@ The working workstation had a different configuration:
 | DNS Server 2 | Not configured | 10.10.51.21 |
 | Domain lookup | Failed | Working |
 
-This was an important finding: the problem workstation was not just missing DNS. Its IP configuration also differed from nearby working machines.
+Это было важное открытие: у проблемной рабочей станции отсутствовал не только DNS. Ее IP-конфигурация также отличалась от конфигурации соседних работающих машин.
 
 ## Switch Port and Cable Test
 
-To exclude a physical network issue, the cables were swapped between the problem workstation and a working workstation on the Cisco switch.
+Чтобы исключить физическую проблему в сети, кабели были поменяны местами между проблемной рабочей станцией и работающей рабочей станцией на коммутаторе Cisco.
 
 Result:
 
-- The working workstation continued to work.
-- The problem workstation continued to fail.
+- Рабочая станция продолжала функционировать.
+- Проблемная рабочая станция продолжала выходить из строя.
 
 Conclusion:
 
 ```text
-The cable and switch port were not the root cause.
-The issue stayed with the workstation or its local network configuration.
+Кабель и порт коммутатора не являлись первопричиной проблемы.
+Проблема заключалась в рабочей станции или конфигурации её локальной сети.
 ```
 
 ## Administrative Rights Check
 
-Changing the adapter settings required administrative rights. When opening adapter properties, Windows displayed a UAC prompt and attempted to validate a domain admin account. Because the domain was not reachable, the credential could not be verified.
+Для изменения параметров адаптера требовались права администратора. При открытии свойств адаптера Windows отобразила запрос UAC и попыталась проверить учетную запись администратора домена. Поскольку домен был недоступен, учетные данные не удалось проверить.
 
-Local administrators were checked:
+Были проверены местные администраторы:
 
 ```cmd
 net localgroup administrators
@@ -165,47 +164,47 @@ localadmin1
 localadmin2
 ```
 
-The built-in local Administrator account was active, but the password was not available during troubleshooting.
+Встроенная локальная учетная запись администратора была активна, но пароль от нее не был доступен во время устранения неполадок.
 
 ## Findings
 
-The investigation showed the following:
+В ходе расследования было установлено следующее:
 
-- The NIC had link.
-- The local gateway responded.
-- The cable and Cisco switch port were tested and excluded.
-- DNS servers were missing from the problem workstation.
-- The domain name could not be resolved.
-- The domain controller could not be discovered.
-- The problem workstation used a different subnet and gateway than nearby working machines.
-- Changing the adapter settings required local administrative access.
+- Сетевая карта имела соединение.
+- Локальный шлюз ответил.
+- Кабель и порт коммутатора Cisco были проверены и исключены из проверки.
+- DNS-серверы отсутствовали на проблемной рабочей станции.
+- Не удалось разрешить доменное имя.
+- Не удалось обнаружить контроллер домена.
+- Проблемная рабочая станция использовала другую подсеть и шлюз, чем расположенные рядом работающие машины.
+- Для изменения настроек адаптера требовался локальный административный доступ.
 
 ## Conclusion
 
-The most likely root cause was incorrect static network configuration on the workstation, including missing DNS servers. The workstation was configured differently from working machines in the same area and could not reach the domain infrastructure.
+Наиболее вероятной причиной была некорректная статическая сетевая конфигурация на рабочей станции, включая отсутствие DNS-серверов. Рабочая станция была настроена иначе, чем работающие машины в том же районе, и не могла подключиться к доменной инфраструктуре.
 
-The issue was not caused by the physical cable or the switch port.
+Проблема не была вызвана самим кабелем или портом коммутатора.
 
 ## Proposed Fix
 
-Log in with a local administrator account or use another approved administrative method. Then open:
+Войдите в систему, используя учетную запись локального администратора, или воспользуйтесь другим утвержденным способом управления. Затем откройте:
 
 ```text
 Control Panel -> Network Connections -> Ethernet -> Properties -> Internet Protocol Version 4 (TCP/IPv4)
 ```
 
-Review and correct the IPv4 configuration according to the correct network segment.
+Проверьте и исправьте конфигурацию IPv4 в соответствии с правильным сетевым сегментом.
 
-At minimum, configure the internal DNS servers used by working machines:
+Как минимум, необходимо настроить внутренние DNS-серверы, используемые работающими машинами:
 
 ```text
 Preferred DNS server: 10.10.50.21
 Alternate DNS server: 10.10.51.21
 ```
 
-If the workstation is supposed to be in the same network as nearby working machines, also verify the IP address, subnet mask, and gateway with the network team before applying changes.
+Если рабочая станция должна находиться в той же сети, что и расположенные рядом работающие машины, перед внесением изменений также необходимо проверить IP-адрес, маску подсети и шлюз с сетевой командой.
 
-After changes, run:
+После внесения изменений выполните:
 
 ```cmd
 ipconfig /flushdns
@@ -213,8 +212,8 @@ nslookup corp.local
 nltest /dsgetdc:corp.local
 ```
 
-Expected result:
+Result:
 
-- The domain name resolves successfully.
-- A domain controller is discovered.
-- Domain credentials can be validated again.
+- Доменное имя успешно разрешается.
+- Обнаружен контроллер домена.
+- Учетные данные домена могут быть проверены повторно.
