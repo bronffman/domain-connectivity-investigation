@@ -26,6 +26,7 @@ Getting DC name failed: Status = 1355 ERROR_NO_SUCH_DOMAIN
 ```
 
 В Windows также отображалось предупреждение о состоянии сети. Поскольку это была изолированная корпоративная сеть, статус «Нет интернета» в Windows не рассматривался как основная проблема.
+<img width="628" height="164" alt="image" src="https://github.com/user-attachments/assets/c9b2e832-af79-4322-aeab-c981567c40c3" />
 
 ## Problem Workstation Configuration
 
@@ -47,30 +48,13 @@ tracert 10.10.40.161
 
 Результат: шлюз ответил успешно.
 
-## DNS Check
-
-Проверка конфигурации DNS проводилась с помощью:
-
-```cmd
-netsh interface ipv4 show dnsservers
-```
-
-Result:
-
-```text
-Configuration for interface "Ethernet"
-Statically Configured DNS Servers: None
-```
-
-Это объясняло, почему рабочая станция не могла разрешить доменное имя или обнаружить контроллер домена.
-
 ## Domain Discovery Check
 
 Поиск контроллера домена завершился неудачей:
-
 ```cmd
 nltest /dsgetdc:corp.local
 ```
+<img width="973" height="144" alt="image" src="https://github.com/user-attachments/assets/0129ef9d-927b-44bb-a234-993f32593b95" />
 
 Result:
 
@@ -79,6 +63,65 @@ Getting DC name failed: Status = 1355 ERROR_NO_SUCH_DOMAIN
 ```
 
 Это подтвердило, что рабочая станция не смогла обнаружить инфраструктуру домена.
+
+## DNS Check
+
+Проверка конфигурации DNS проводилась с помощью:
+
+```cmd
+netsh interface ipv4 show dnsservers
+```
+<img width="708" height="226" alt="image" src="https://github.com/user-attachments/assets/318e1253-d03f-4472-8dea-bf48dcd1383b" />
+
+Result:
+
+```text
+Configuration for interface "Ethernet"
+Statically Configured DNS Servers: None
+```
+Это объясняло, почему рабочая станция не могла разрешить доменное имя или обнаружить контроллер домена.
+
+### Additional Diagnostics
+
+Были выполнены дополнительные проверки DNS и доменной инфраструктуры:
+
+```cmd
+ipconfig /flushdns
+ipconfig /registerdns
+nslookup corp.local
+nltest /dsgetdc:corp.local
+```
+<img width="1269" height="1075" alt="image" src="https://github.com/user-attachments/assets/53103bd4-2a37-4e0c-b865-1f2109623857" />
+На последнем скриншоте:
+
+```netsh interface ipv4 show dnsservers
+Configuration for interface "Ethernet"
+Statically Configured DNS Servers: None
+```
+вообще не настроен или слетел DNS-сервер.
+
+Из-за этого:
+
+- ping corp.local не работает;
+- nltest /dsgetdc:corp.local не находит контроллер домена;
+- доменные ресурсы не открываются;
+- сетевые диски и приложения могут не работать;
+- Windows показывает проблемы с сетью.
+
+При этом сама сеть исправна:
+
+- IP есть 
+- шлюз доступен 
+- маршруты есть 
+- Cisco работает
+
+Что можно сделать. Один из вариантов решения.
+
+Можно проверить на рабочем компьютере из той же сети и узнать IP DNS-сервера домена.
+```
+Командой ipconfig /all
+Найти строку DNS Servers . . . . . : 10.x.x.x
+```
 
 ## Route and ARP Checks
 
@@ -127,6 +170,7 @@ ipconfig /all
 ## Switch Port and Cable Test
 
 Чтобы исключить физическую проблему в сети, кабели были поменяны местами между проблемной рабочей станцией и работающей рабочей станцией на коммутаторе Cisco.
+<img width="1221" height="528" alt="image" src="https://github.com/user-attachments/assets/a21c8c67-67bc-4ab4-9146-eb54ed311876" />
 
 Result:
 
