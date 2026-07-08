@@ -242,8 +242,10 @@ localadmin2
 
 Используемые DNS-серверы:
 
-- Primary DNS:   10.41.206.21
-- Secondary DNS: 10.41.207.21
+```text
+Primary DNS:   10.41.206.21
+Secondary DNS: 10.41.207.21
+```
 
 Путь изменения настроек:
 <img width="939" height="195" alt="image" src="https://github.com/user-attachments/assets/5c29718c-74aa-4685-b9bc-7dba58bcf288" />
