@@ -54,7 +54,7 @@ tracert 10.10.40.161
 ```cmd
 nltest /dsgetdc:corp.local
 ```
-<img width="973" height="144" alt="image" src="https://github.com/user-attachments/assets/0129ef9d-927b-44bb-a234-993f32593b95" />
+<img width="973" height="144" alt="image" src="https://github.com/user-attachments/assets/71458971-5e78-4ff2-99e6-b4cd919fcb8e" />
 
 Result:
 
@@ -71,7 +71,7 @@ Getting DC name failed: Status = 1355 ERROR_NO_SUCH_DOMAIN
 ```cmd
 netsh interface ipv4 show dnsservers
 ```
-<img width="708" height="226" alt="image" src="https://github.com/user-attachments/assets/318e1253-d03f-4472-8dea-bf48dcd1383b" />
+<img width="708" height="226" alt="image" src="https://github.com/user-attachments/assets/aa4c362e-cfdb-46eb-9a4b-2b26d54d12b1" />
 
 Result:
 
@@ -91,7 +91,8 @@ ipconfig /registerdns
 nslookup corp.local
 nltest /dsgetdc:corp.local
 ```
-<img width="1269" height="1075" alt="image" src="https://github.com/user-attachments/assets/53103bd4-2a37-4e0c-b865-1f2109623857" />
+<img width="938" height="1075" alt="image" src="https://github.com/user-attachments/assets/36fd0a99-2d16-41d4-abc1-90536625348d" />
+
 На последнем скриншоте:
 
 ```netsh interface ipv4 show dnsservers
