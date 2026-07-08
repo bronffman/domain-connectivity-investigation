@@ -197,7 +197,7 @@ Conclusion:
 net localgroup administrators
 ```
 
-<img width="553" height="147" alt="image" src="https://github.com/user-attachments/assets/24351035-d318-47c0-86c2-22cc99e8fde9" />
+<img width="553" height="147" alt="image" src="https://github.com/user-attachments/assets/fa6e9d90-8159-4017-a66d-502b23364d60" />
 
 Example anonymized result:
 
