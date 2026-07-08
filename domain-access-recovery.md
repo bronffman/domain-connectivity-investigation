@@ -266,8 +266,8 @@ Control Panel
 После применения настроек были выполнены контрольные проверки:
 ```cmd
 ipconfig /flushdns
-nslookup mbr.loc
-nltest /dsgetdc:mbr.loc
+nslookup corp.local
+nltest /dsgetdc:corp.local
 ```
 
 В результате рабочая станция успешно восстановила доступ к домену и корпоративным ресурсам.
