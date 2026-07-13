@@ -256,8 +256,8 @@ localadmin2
 Используемые DNS-серверы:
 
 ```text
-Primary DNS:   10.41.206.21
-Secondary DNS: 10.41.207.21
+Primary DNS:   10.10.50.21
+Secondary DNS: 10.10.51.21
 ```
 
 Путь изменения настроек:
