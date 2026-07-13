@@ -107,7 +107,7 @@ nltest /dsgetdc:corp.local
 Configuration for interface "Ethernet"
 Statically Configured DNS Servers: None
 ```
-вообще не настроен или слетел DNS-сервер.
+На данном этапе стало понятно, что DNS-серверы в настройках адаптера отсутствуют, поэтому дальнейшая проверка была сосредоточена на сетевой конфигурации рабочей станции.
 
 Из-за этого:
 
