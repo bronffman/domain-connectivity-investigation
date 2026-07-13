@@ -99,7 +99,8 @@ ipconfig /registerdns
 nslookup corp.local
 nltest /dsgetdc:corp.local
 ```
-<img width="938" height="1075" alt="image" src="https://github.com/user-attachments/assets/36fd0a99-2d16-41d4-abc1-90536625348d" />
+
+<img width="500" height="438" alt="123" src="https://github.com/user-attachments/assets/75278f54-9c4d-4be3-853e-fc68d4d07c96" />
 
 На последнем скриншоте:
 
@@ -160,7 +161,8 @@ arp -a
 ```cmd
 ipconfig /all
 ```
-<img width="1280" height="881" alt="image" src="https://github.com/user-attachments/assets/fd6a6308-210e-4b36-9697-9003d34c390d" />
+
+<img width="699" height="500" alt="aaaaa" src="https://github.com/user-attachments/assets/2bad8c2a-083e-4ba4-866b-51ee2dc1bfcd" />
 
 Рабочее место имело другую конфигурацию:
 
