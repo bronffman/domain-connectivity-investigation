@@ -56,22 +56,6 @@ tracert 10.10.40.161
 
 Результат: шлюз ответил успешно.
 
-## Domain Discovery Check
-
-Поиск контроллера домена завершился неудачей:
-```cmd
-nltest /dsgetdc:corp.local
-```
-<img width="973" height="144" alt="image" src="https://github.com/user-attachments/assets/71458971-5e78-4ff2-99e6-b4cd919fcb8e" />
-
-Результат:
-
-```text
-Getting DC name failed: Status = 1355 ERROR_NO_SUCH_DOMAIN
-```
-
-Это подтвердило, что рабочая станция не смогла обнаружить инфраструктуру домена.
-
 ## DNS Check
 
 Проверка конфигурации DNS проводилась с помощью:
@@ -88,6 +72,22 @@ Configuration for interface "Ethernet"
 Statically Configured DNS Servers: None
 ```
 Это объясняло, почему рабочая станция не могла разрешить доменное имя или обнаружить контроллер домена.
+
+## Domain Discovery Check
+
+Поиск контроллера домена завершился неудачей:
+```cmd
+nltest /dsgetdc:corp.local
+```
+<img width="973" height="144" alt="image" src="https://github.com/user-attachments/assets/71458971-5e78-4ff2-99e6-b4cd919fcb8e" />
+
+Результат:
+
+```text
+Getting DC name failed: Status = 1355 ERROR_NO_SUCH_DOMAIN
+```
+
+Это подтвердило, что рабочая станция не смогла обнаружить инфраструктуру домена.
 
 ### Additional Diagnostics
 
