@@ -1,6 +1,6 @@
 # Commands Used During Troubleshooting
 
-This file contains the commands used during the investigation and what each command was used for.
+В этом файле содержатся команды, использованные в ходе расследования, и описание назначения каждой команды.
 
 ## Check IP Configuration
 
@@ -8,7 +8,7 @@ This file contains the commands used during the investigation and what each comm
 ipconfig /all
 ```
 
-Used to check:
+Используется для проверки:
 
 - IPv4 address
 - Subnet mask
@@ -23,7 +23,7 @@ Used to check:
 netsh interface ipv4 show dnsservers
 ```
 
-Used to confirm whether IPv4 DNS servers were configured on the Ethernet adapter.
+Используется для подтверждения того, настроены ли DNS-серверы IPv4 на сетевом адаптере Ethernet.
 
 ## Test Gateway Reachability
 
@@ -32,7 +32,7 @@ ping 10.10.40.161
 tracert 10.10.40.161
 ```
 
-Used to verify that the workstation could reach its default gateway.
+Используется для проверки возможности рабочей станции установить связь со своим шлюзом по умолчанию.
 
 ## Test DNS Servers
 
@@ -42,7 +42,7 @@ ping 10.10.51.21
 tracert 10.10.50.21
 ```
 
-Used to check whether internal DNS servers were reachable from the problem workstation.
+Используется для проверки доступности внутренних DNS-серверов с проблемной рабочей станции.
 
 ## Test Domain Name Resolution
 
@@ -51,7 +51,7 @@ nslookup corp.local
 ping corp.local
 ```
 
-Used to check whether the corporate domain name could be resolved.
+Используется для проверки возможности разрешения доменного имени компании.
 
 ## Discover Domain Controller
 
@@ -59,7 +59,7 @@ Used to check whether the corporate domain name could be resolved.
 nltest /dsgetdc:corp.local
 ```
 
-Used to verify whether the workstation could locate a domain controller.
+Используется для проверки того, может ли рабочая станция обнаружить контроллер домена.
 
 ## Check Routes
 
@@ -67,7 +67,7 @@ Used to verify whether the workstation could locate a domain controller.
 route print
 ```
 
-Used to inspect the IPv4 routing table.
+Используется для проверки таблицы маршрутизации IPv4.
 
 ## Check ARP Table
 
@@ -75,7 +75,7 @@ Used to inspect the IPv4 routing table.
 arp -a
 ```
 
-Used to confirm that local gateway addresses were visible on Layer 2.
+Используется для подтверждения того, что адреса локальных шлюзов видны на уровне 2.
 
 ## Check Current User
 
@@ -84,7 +84,7 @@ whoami
 net user %username%
 ```
 
-Used to confirm whether the current user had local administrative privileges.
+Используется для подтверждения наличия у текущего пользователя локальных административных привилегий.
 
 ## Check Local Administrators
 
@@ -93,4 +93,4 @@ net localgroup administrators
 net user administrator
 ```
 
-Used to identify local administrator accounts and check whether the built-in Administrator account was active.
+Используется для идентификации локальных учетных записей администратора и проверки активности встроенной учетной записи администратора.
