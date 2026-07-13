@@ -31,16 +31,6 @@
 | domain-access-recovery.md | Полный отчет по расследованию |
 | commands.md | Использованные диагностические команды |
 
-## Skills Demonstrated
-
-- Windows Networking
-- DNS Troubleshooting
-- Active Directory
-- TCP/IP Diagnostics
-- Route Analysis
-- Root Cause Analysis
-- Incident Investigation
-
-## Note
+## Notes*
 
 Все IP-адреса, доменные имена и учетные записи в проекте заменены на вымышленные значения.
