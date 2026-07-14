@@ -1,4 +1,4 @@
-# Domain Connectivity Investigation
+# Domain Connectivity Investigation.
 
 Расследование проблемы доступа рабочей станции к доменной инфраструктуре в изолированном корпоративном сетевом контуре.
 
